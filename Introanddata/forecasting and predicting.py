@@ -1,5 +1,5 @@
 import pandas as pd
-import quandl, math, datetime
+import quandl, math, datetime, os
 import numpy as np
 from sklearn import preprocessing, svm
 from sklearn.linear_model import LinearRegression
@@ -15,7 +15,7 @@ style.use('ggplot')
 # Note that 'Adjusted' simply means the price of the stock after such things as  stock splits. 
 # We could use the non-adjusted features as well, but using both adjusted and non-adjusted is 
 # not useful as they both essentially describe the same things. 
-quandl.ApiConfig.api_key = 'oHRWHmziDF-MQNR4yuYM'
+quandl.ApiConfig.api_key = os.environ['QUANDL_API_KEY']
 df = quandl.get('WIKI/GOOGL')
 df = df[['Adj. Open','Adj. High','Adj. Low','Adj. Close','Adj. Volume']]
 
@@ -108,6 +108,8 @@ for i in forecast_set:
     # We do this because the first through second to last columns, (like adj. Close, adj. open, etc..) we don't have any actual data for, so we set these columns to NaN
     # Then we set the last column (forecast) to i, which is just data in the list forecast_set. forecast_set being our predicated prices)
     df.loc[next_date] = [np.nan for _ in range(len(df.columns)-1)] + [i]
+
+print(df.tail())
 
 df['Adj. Close'].plot()
 df['Forecast'].plot()
