@@ -11,7 +11,9 @@ from sklearn.model_selection import train_test_split
 # The adjusted high and low stock price, the Adjusted close and the Adjusted volume. 
 # Note that 'Adjusted' simply means the price of the stock after such things as  stock splits. 
 # We could use the non-adjusted features as well, but using both adjusted and non-adjusted is 
-# not useful as they both essentially describe the same things. 
+# not useful as they both essentially describe the same things.
+
+#Don't forget to put api key in environment variable
 quandl.ApiConfig.api_key = os.environ['QUANDL_API_KEY']
 df = quandl.get('WIKI/GOOGL')
 df = df[['Adj. Open','Adj. High','Adj. Low','Adj. Close','Adj. Volume']]
