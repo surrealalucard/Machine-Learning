@@ -49,7 +49,7 @@ df.fillna(-99999, inplace=True)
 # Now we'll define our regression algorithm
 # Let's first set how many days back we want to go  as a percentage of the number of days in the data frame. 
 # Here we'll set it to go back one percent of the total number of days in the data frame. 
-forecast_out = int(math.ceil(0.01*len(df)))
+forecast_out = int(math.ceil(0.1*len(df)))
 print("Number of days: %i" % forecast_out)
 
 # Here we use the pandas shift method to shift the forecast label values out by the amount
@@ -58,13 +58,13 @@ print("Number of days: %i" % forecast_out)
 df['label'] = df[forecast_col].shift(-forecast_out)
 
 # Create an array from df, with no label column.
-X = np.array(df.drop(['label'],1))
+X = np.array(df.drop(['label','Adj. Close'],1))
 
 # This is suppose to scale the values, and create a clamp. Speeds up training the data.
 X = preprocessing.scale(X)
 
 X_lately = X[-forecast_out:]
-X = X[:-forecast_out:]
+X = X[:-forecast_out]
 
 
 df.dropna(inplace=True)
