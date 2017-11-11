@@ -12,11 +12,20 @@ def k_nearest_neighbors(data, predict, k=3):
     distances = []
     for group in data:
         for features in data[group]:
-            euclidean_distance = np.linalg.norm(np.array(features)-np.array(predict))
-            distances.append([euclidean_distance, group])
+            # Features is each float value in a single group, which is the 9 values.
 
+            # Euclid distance is the distance the predict point is from the data point.
+            euclidean_distance = np.linalg.norm(np.array(features)-np.array(predict))
+            # Appending distance with its group (2 or 4), the distance is all the points combined. So one distance is for one "person" in the breast cancer data set
+            distances.append([euclidean_distance, group])
+            
+            
+    # extrapolating "group" (2 or 4) from all the points.
     votes = [i[1] for i in sorted(distances) [:k]]
+    
+    # Finding which "group" shows up most commonly for each "feature"
     vote_result = Counter(votes).most_common(1)[0][0]
+    
     confidence = Counter(votes).most_common(1)[0][1] / k
     return vote_result, confidence
 
@@ -29,10 +38,10 @@ for i in range(1):
     df.drop(['id'], 1, inplace=True)
     # converting data to int list, because some of the values have '' around them, making them strings
     full_data = df.astype(float).values.tolist()
-    print(full_data[:1])
+    
     # shuffling our data
     random.shuffle(full_data)
-    print(full_data[:1])
+    
     test_size = 0.4
     train_set = {2:[], 4:[]}
     test_set = {2:[], 4:[]}
@@ -63,4 +72,4 @@ for i in range(1):
     #print('Accuracy:', correct/total)
     accuracies.append(correct/total)
 
-print(sum(accuracies)/len(accuracies))
+#print(sum(accuracies)/len(accuracies))
